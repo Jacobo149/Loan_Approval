@@ -27,61 +27,87 @@ from sklearn.ensemble import GradientBoostingClassifier
 from xgboost import XGBClassifier
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 
-df = pd.read_csv('../resources/train_u6lujuX_CVtuZ9i.csv')
+def preproc():
 
-df = df.drop(['Loan_ID'], axis = 1)
-df['Gender'].fillna(df['Gender'].mode()[0],inplace=True)
-df['Married'].fillna(df['Married'].mode()[0],inplace=True)
-df['Dependents'].fillna(df['Dependents'].mode()[0],inplace=True)
-df['Self_Employed'].fillna(df['Self_Employed'].mode()[0],inplace=True)
-df['Credit_History'].fillna(df['Credit_History'].mode()[0],inplace=True)
-df['Loan_Amount_Term'].fillna(df['Loan_Amount_Term'].mode()[0],inplace=True)
-df['LoanAmount'].fillna(df['LoanAmount'].mean(),inplace=True)
+    df = pd.read_csv('../resources/train_u6lujuX_CVtuZ9i.csv')
 
-df = pd.get_dummies(df, dtype=int)
+    df = df.drop(['Loan_ID'], axis = 1)
+    df['Gender'].fillna(df['Gender'].mode()[0],inplace=True)
+    df['Married'].fillna(df['Married'].mode()[0],inplace=True)
+    df['Dependents'].fillna(df['Dependents'].mode()[0],inplace=True)
+    df['Self_Employed'].fillna(df['Self_Employed'].mode()[0],inplace=True)
+    df['Credit_History'].fillna(df['Credit_History'].mode()[0],inplace=True)
+    df['Loan_Amount_Term'].fillna(df['Loan_Amount_Term'].mode()[0],inplace=True)
+    df['LoanAmount'].fillna(df['LoanAmount'].mean(),inplace=True)
 
-# Drop columns
-df = df.drop(['Gender_Female', 'Married_No', 'Education_Not Graduate', 
-              'Self_Employed_No', 'Loan_Status_N'], axis = 1)
+    df = pd.get_dummies(df, dtype=int)
 
-# Rename columns name
-new = {'Gender_Male': 'Gender', 'Married_Yes': 'Married', 
-       'Education_Graduate': 'Education', 'Self_Employed_Yes': 'Self_Employed',
-       'Loan_Status_Y': 'Loan_Status'}
-       
-df.rename(columns=new, inplace=True)
+    # Drop columns
+    df = df.drop(['Gender_Female', 'Married_No', 'Education_Not Graduate', 
+                'Self_Employed_No', 'Loan_Status_N'], axis = 1)
 
-#Remove outliers
-Q1 = df.quantile(0.25)
-Q3 = df.quantile(0.75)
-IQR = Q3 - Q1
+    # Rename columns name
+    new = {'Gender_Male': 'Gender', 'Married_Yes': 'Married', 
+        'Education_Graduate': 'Education', 'Self_Employed_Yes': 'Self_Employed',
+        'Loan_Status_Y': 'Loan_Status'}
+        
+    df.rename(columns=new, inplace=True)
 
-df = df[~((df < (Q1 - 1.5 * IQR)) |(df > (Q3 + 1.5 * IQR))).any(axis=1)]
+    #Remove outliers
+    Q1 = df.quantile(0.25)
+    Q3 = df.quantile(0.75)
+    IQR = Q3 - Q1
 
-# Square Root Transformation
+    df = df[~((df < (Q1 - 1.5 * IQR)) |(df > (Q3 + 1.5 * IQR))).any(axis=1)]
 
-df.ApplicantIncome = np.sqrt(df.ApplicantIncome)
-df.CoapplicantIncome = np.sqrt(df.CoapplicantIncome)
-df.LoanAmount = np.sqrt(df.LoanAmount)
+    # Square Root Transformation
 
-X = df.drop(["Loan_Status"], axis=1)
-y = df["Loan_Status"]
+    df.ApplicantIncome = np.sqrt(df.ApplicantIncome)
+    df.CoapplicantIncome = np.sqrt(df.CoapplicantIncome)
+    df.LoanAmount = np.sqrt(df.LoanAmount)
 
-X, y = SMOTE().fit_resample(X, y)
+    X = df.drop(["Loan_Status"], axis=1)
+    y = df["Loan_Status"]
 
-
-X = MinMaxScaler().fit_transform(X)
-
-
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 0)
+    X, y = SMOTE().fit_resample(X, y)
 
 
-scoreListRF = []
-for i in range(2,25):
-    RFclassifier = RandomForestClassifier(n_estimators = 1000, random_state = 1, max_leaf_nodes=i)
-    RFclassifier.fit(X_train, y_train)
-    scoreListRF.append(RFclassifier.score(X_test, y_test))
+    X = MinMaxScaler().fit_transform(X)
+
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 0)
+
+    return df, X_train, y_train
+
+# TODO: Move train and predict to a different file
+#scoreListRF = []
+def train(X_train, y_train):
+    for i in range(2,25):
+        RFclassifier = RandomForestClassifier(n_estimators = 1000, random_state = 1, max_leaf_nodes=i)
+        RFclassifier.fit(X_train, y_train)
+    #scoreListRF.append(RFclassifier.score(X_test, y_test))
+
+    return RFclassifier
+
+def predict(df):
+    #TODO: Make this actually predict
+    print(df.head())
     
+
+
+dataf, X_train, y_train = preproc()
+
+ml = train(X_train, y_train)
+
+predict(dataf)
+
+
+
+
+
+
+#Plotting Results
+'''
 plt.plot(range(2,25), scoreListRF)
 plt.xticks(np.arange(2,25,1))
 plt.xlabel("RF Value")
@@ -89,3 +115,5 @@ plt.ylabel("Score")
 plt.show()
 RFAcc = max(scoreListRF)
 print("Random Forest Accuracy:  {:.2f}%".format(RFAcc*100))
+'''
+
