@@ -27,7 +27,7 @@ from sklearn.ensemble import GradientBoostingClassifier
 from xgboost import XGBClassifier
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 
-df = pd.read_csv('../resources/test_Y3wMUE5_7gLdaTN.csv')
+df = pd.read_csv('../resources/train_u6lujuX_CVtuZ9i.csv')
 
 df = df.drop(['Loan_ID'], axis = 1)
 df['Gender'].fillna(df['Gender'].mode()[0],inplace=True)
@@ -39,14 +39,16 @@ df['Loan_Amount_Term'].fillna(df['Loan_Amount_Term'].mode()[0],inplace=True)
 df['LoanAmount'].fillna(df['LoanAmount'].mean(),inplace=True)
 
 df = pd.get_dummies(df, dtype=int)
+
 # Drop columns
 df = df.drop(['Gender_Female', 'Married_No', 'Education_Not Graduate', 
-              'Self_Employed_No'], axis = 1)
+              'Self_Employed_No', 'Loan_Status_N'], axis = 1)
 
 # Rename columns name
 new = {'Gender_Male': 'Gender', 'Married_Yes': 'Married', 
-       'Education_Graduate': 'Education', 'Self_Employed_Yes': 'Self_Employed'}
-
+       'Education_Graduate': 'Education', 'Self_Employed_Yes': 'Self_Employed',
+       'Loan_Status_Y': 'Loan_Status'}
+       
 df.rename(columns=new, inplace=True)
 
 #Remove outliers
@@ -55,8 +57,7 @@ Q3 = df.quantile(0.75)
 IQR = Q3 - Q1
 
 df = df[~((df < (Q1 - 1.5 * IQR)) |(df > (Q3 + 1.5 * IQR))).any(axis=1)]
-print("Made it here")
-"""
+
 # Square Root Transformation
 
 df.ApplicantIncome = np.sqrt(df.ApplicantIncome)
@@ -87,6 +88,4 @@ plt.xlabel("RF Value")
 plt.ylabel("Score")
 plt.show()
 RFAcc = max(scoreListRF)
-print("Random Forest Accuracy:  {:.2f}%".format(RFAcc*100)) """
-
-
+print("Random Forest Accuracy:  {:.2f}%".format(RFAcc*100))
