@@ -89,17 +89,18 @@ def train(X_train, y_train):
 
     return RFclassifier
 
-def predict(df):
+def predict(df, rf):
     #TODO: Make this actually predict
-    print(df.head())
-    
+    #print(df.loc[0,:])
+    pred = [76,0,12,360,1,1,0,1,0,0,0,1,0,0,0,1]
+    print(rf.predict([pred]))
 
 
 dataf, X_train, y_train = preproc()
 
 ml = train(X_train, y_train)
 
-predict(dataf)
+predict(dataf, ml)
 
 
 
