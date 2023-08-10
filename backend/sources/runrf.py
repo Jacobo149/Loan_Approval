@@ -22,6 +22,6 @@ def train():
 def predict(df, rf, pred):
     return rf.predict([pred])
 
-pred = [76,0,12,360,1,1,0,1,0,0,0,1,0,0,0,1]
-df, rf = train()
-print(predict(df, rf, pred))
+#pred = [76,0,12,360,1,1,0,1,0,0,0,1,0,0,0,1]
+#df, rf = train()
+#print(predict(df, rf, pred))
