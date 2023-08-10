@@ -79,29 +79,6 @@ def preproc():
 
     return df, X_train, y_train
 
-# TODO: Move train and predict to a different file
-#scoreListRF = []
-def train(X_train, y_train):
-    for i in range(2,25):
-        RFclassifier = RandomForestClassifier(n_estimators = 1000, random_state = 1, max_leaf_nodes=i)
-        RFclassifier.fit(X_train, y_train)
-    #scoreListRF.append(RFclassifier.score(X_test, y_test))
-
-    return RFclassifier
-
-def predict(df, rf):
-    #TODO: Make this actually predict
-    #print(df.loc[0,:])
-    pred = [76,0,12,360,1,1,0,1,0,0,0,1,0,0,0,1]
-    print(rf.predict([pred]))
-
-
-dataf, X_train, y_train = preproc()
-
-ml = train(X_train, y_train)
-
-predict(dataf, ml)
-
 
 
 
