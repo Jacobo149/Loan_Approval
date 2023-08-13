@@ -1,28 +1,27 @@
-import React, {useEffect, useState} from 'react';
-
-
-
+import React, { useState } from 'react';
 
 function App() {
+  const [arr, setArr] = useState('');
 
-  const [arr, setArr] = useState("");
-  const handleSubmit = (e) => {
-    //fill this in
-    e.preventDefault();
-    alert(arr);
-  }
+  const handleInputChange = (e) => {
+    setArr(e.target.value);
+  };
 
   return (
     <div className="App">
-
-      <br></br>
-      <form onSubmit={handleSubmit}>
+      <br />
+      <form action="http://localhost:8080/api/home" method="post">
         <div>Input Array for processing</div>
-        <input type="text" value={arr} onChange={(e) => setArr(e.target.value)} />
-        <input type="submit"  />
+        <input
+          type="text"
+          name="name"
+          value={arr}
+          onChange={handleInputChange}
+        />
+        <input type="submit" />
       </form>
     </div>
-  )
+  );
 }
 
 export default App;
