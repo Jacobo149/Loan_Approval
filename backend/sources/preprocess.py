@@ -25,11 +25,10 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from xgboost import XGBClassifier
-from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 
 def preproc():
 
-    df = pd.read_csv('../resources/train_u6lujuX_CVtuZ9i.csv')
+    df = pd.read_csv(r'\Users\jakep\OneDrive\Desktop\Projects\Loan_Approval\backend\resources\train_u6lujuX_CVtuZ9i.csv')
 
     df = df.drop(['Loan_ID'], axis = 1)
     df['Gender'].fillna(df['Gender'].mode()[0],inplace=True)
