@@ -1,6 +1,6 @@
 # Loan_Approval Application
 Trains a random forest algorithm from Scikit-learn Library (93% accuracy)  
-Leveraging the Next.js framework, the application asks the user for independent variables and predicts whether a user is eligible for a loan.  
+Leveraging the Next.js framework, the application asks the user for independent variables and predicts whether a user is eligible for a loan  
 
 ## Issues Being Addressed
 - Need to implement Fetch request to display on frontend
@@ -8,7 +8,7 @@ Leveraging the Next.js framework, the application asks the user for independent 
 - Refine UX
 - Clean up code
 
-## How To Run:
+## How To Run
 
 ### Prerequisites
 Download necessary packages (Python, Javascript, numpy, pandas, scipy, sklearn, npm)  
