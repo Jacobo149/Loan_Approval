@@ -1,3 +1,6 @@
+# Loan_Approval
+Running an ML algorithm on the backend on Loan Approval dataset, will tell you if you are eligble for a loan.
+
 # Loan_Approval Application
 Trains a random forest algorithm from Scikit-learn Library (93% accuracy)  
 Leveraging the Next.js framework, the application asks the user for independent variables and predicts whether a user is eligible for a loan  
