@@ -7,7 +7,6 @@ Leveraging the Next.js framework, the application asks the user for independent 
 
 ## Issues Being Addressed
 - Need to implement Fetch request to display on frontend
-- Change sys calls instead to __init__ calls for reproducibility
 - Refine UX
 - Clean up code
 
